@@ -1,0 +1,287 @@
+/* ================= RESET ================= */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: #0f172a;
+  color: #e5e7eb;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  line-height: 1.6;
+}
+
+/* ================= GLOBAL ================= */
+h1, h2, h3 {
+  font-weight: 600;
+}
+
+h2 {
+  margin-bottom: 20px;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid #334155;
+  margin: 20px 0;
+}
+
+button {
+  background-color: #38bdf8;
+  color: #0f172a;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
+input, textarea, select {
+  background-color: #020617;
+  color: #e5e7eb;
+  border: 1px solid #4e6380;
+  border-radius: 6px;
+  padding: 6px;
+}
+
+textarea {
+  resize: vertical;
+}
+
+/* ================= PAGE LAYOUT ================= */
+.webpage_title {
+  font-size: 28px;
+  margin-bottom: 20px;
+}
+
+.page_container {
+  display: flex;
+  gap: 30px;
+}
+
+/* ================= SECTIONS ================= */
+.left_area,
+.center_area,
+.right_area {
+  background-color: #1e293b;
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.left_area {
+  width: 35%;
+}
+
+.center_area {
+  width: 27%;
+}
+
+.right_area {
+  width: 38%;
+}
+
+/* ================= SPRINTS ================= */
+.sprint_box {
+  border: 1px solid #334155;
+  border-radius: 10px;
+  padding: 15px;
+  margin-bottom: 15px;
+}
+
+.sprint_box b {
+  font-size: 16px;
+}
+
+/* Sprint bar */
+.sprint_bar {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.sprint_bar span {
+  background-color: #020617;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid #334155;
+  font-size: 14px;
+}
+
+/* ================= TASKS ================= */
+.text_tasks_left {
+  margin-top: 20px;
+}
+
+details {
+  background-color: #020617;
+  border-radius: 8px;
+  padding: 10px;
+}
+
+summary {
+  cursor: pointer;
+  font-weight: 600;
+  list-style: none;
+}
+
+summary::-webkit-details-marker {
+  display: none;
+}
+
+summary::before {
+  content: "▸ ";
+  margin-right: 6px;
+}
+
+details[open] summary::before {
+  content: "▾ ";
+}
+
+/* ================= SUBTASKS ================= */
+.text_subtasks_left {
+  margin-top: 8px;
+  padding-left: 15px;
+  color: #cbd5f5;
+}
+
+/* ================= TASK BAR ================= */
+.task_bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.task_bar span {
+  background-color: #020617;
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 1px solid #334155;
+}
+
+/* ================= BUTTON STATES ================= */
+.done_button {
+  background-color: #4ade80;
+}
+
+.undo_button {
+  background-color: #facc15;
+}
+
+.delete_button {
+  background-color: #f87171;
+}
+
+/* ================= NOTEPAD ================= */
+.notepad textarea {
+  box-sizing: border-box;
+  display: block;
+}
+
+.right_area form {
+  width: 100%;
+}
+
+.right_area textarea.notepad,
+.right_area textarea {
+  width: 100%;
+  max-width: 100%;
+  min-width: 100%;
+  display: block;
+  box-sizing: border-box;
+}
+
+.right_area textarea {
+  height: 280px;
+}
+/* ================= INFO TEXT ================= */
+.info_text {
+  color: #94a3b8;
+  font-style: italic;
+}
+
+/* ================= NAVBAR ================= */
+
+.app-navbar {
+  background-color: #020617; /* matches dark theme */
+  border-bottom: 1px solid #334155;
+}
+
+.app-logo {
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.app-nav-center .nav-link {
+  margin: 0 10px;
+}
+
+/* Override bootstrap nav link colors */
+.nav-link {
+  color: #e5e7eb !important;
+  font-weight: 500;
+}
+
+.navbar .nav-link {
+  font-size: 1.3rem;
+  padding: 10px 18px;
+  transition: transform 0.2s ease, font-size 0.2s ease;
+}
+.nav-link:hover {
+  color: #38bdf8 !important;
+}
+
+.navbar .nav-link:hover {
+  transform: scale(1.1);
+}
+
+.navbar .nav-link.active {
+  font-size: 1.45rem;
+  font-weight: 700;
+  transform: scale(1.1);
+}
+
+.plan-link:hover {
+  size: 200%;
+}
+
+.execute-link:hover {
+  size: 200%;
+}
+/* Logout emphasis */
+.logout-link {
+  color: #f87171 !important;
+}
+
+.logout-link:hover {
+  opacity: 0.85;
+}
+
+/* ================= MAIN CONTENT ================= */
+
+.main-content {
+  padding: 30px;
+}
+
+/* ================= LOGO ================= */
+
+.logo-img {
+  height: 42px;
+  width: auto;
+  display: block;
+}
+
+.app-logo {
+  display: flex;
+  margin-left: 8px;
+  align-items: center;
+}
+
+.random_art {
+  width:auto;
+}
+

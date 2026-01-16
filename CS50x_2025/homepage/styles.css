@@ -1,0 +1,49 @@
+.header{
+    display: flex;
+    justify-content: space-between;
+}
+.logo{
+    padding: 6px 8px;
+}
+.navigation-bar{
+    background: #ddd;
+    padding: 10px 18px;
+    border-radius: 6px;
+    display: flex;
+}
+.hamburger{
+    margin-left:40px;
+}
+.main-content-home{
+    font-style: italic;
+    justify-content: center;
+    }
+.main-content-youtube{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80vh;
+}
+.youtube-link{
+    background: #FF0000;
+    padding: 15px 15px;
+    color: white;
+    margin-left: 120px;
+}
+.home{
+    padding: 5px 5px;
+    border-radius: 3px;
+}
+.certifications{
+    padding: 5px 5px;
+    border-radius: 3px;
+}
+.youtube{
+    padding: 5px 5px;
+    border-radius: 3px;
+}
+.projects{
+    padding: 5px 5px;
+    border-radius: 3px;
+}
+

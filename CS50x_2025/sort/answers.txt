@@ -1,0 +1,11 @@
+sort1 uses: Bubble
+
+How do you know?: This takes more time at the Sorted datat set than Sort 2, but akes less time sort 3, whihc signifies, it goes two at a time and keeps checking until the dataset is finished, since it goes by checking tow elemts at a time, it is faster than the sort 3, therefore bubble sort.
+
+sort2 uses: Merge
+
+How do you know?: This is the fastes when sorting out the data both in reversed and random data sets, but takes the longest in the sorted dataset since it still performs all the steps before it decides that the data is sorted in contrast to Selection Sort and Bubble Sort where we see it takes less time, since they keep chekcing if the sorting is correct at each step.
+
+sort3 uses: Selection
+
+How do you know?: Since the sorted data set shows that this soring method takes more time than sort 1 and sort 2, we can conclude that this sorting method goes to each element one by one until the dataset is finished.

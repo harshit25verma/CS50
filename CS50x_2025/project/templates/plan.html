@@ -1,0 +1,188 @@
+{% extends "layout.html" %}
+{% block title %}- Plan{% endblock %}
+{% block main %}
+
+<!-- <h2 class ="webpage_title">Plan Mode</h2> -->
+
+<div class="page_container">
+  <!-- LEFT SIDE -->
+  <div class="left_area">
+
+  <h3>Sprints</h3>
+
+  <form method="post">
+    <input type="hidden" name="action" value="add_sprint">
+    <input autocomplete="off" name="sprint_text" placeholder="Custom sprint name">
+    <button type="submit">Create Sprint</button>
+  </form>
+
+  <br>
+
+  {% for sprint in sprints %}
+  <div class="sprint_box">
+
+    <b>Sprint {{ loop.index }}</b>
+    {% if sprint.text %}
+      <b>({{ sprint.text }})</b>
+    {% else %}
+      <b><br></b>
+    {% endif %}
+    <form method="post" >
+      <input type="hidden" name="action" value="delete_sprint">
+      <input type="hidden" name="sprint_id" value="{{ sprint.id }}">
+      <button class="delete_button" type="submit">Delete Sprint</button>
+    </form>
+
+    <!-- SHOW TASKS -->
+    {% for task in tasks if task.sprint_id == sprint.id %}
+
+      <div class="text_tasks_left">
+      <details {% if expand_task_id == task.id %} open {% endif %}>
+          <summary>
+            {% if task.completed_status == 1 %}
+              <del>{{ loop.index }}. {{ task.text }}</del>
+            {% else %}        
+              {{ loop.index }}. {{ task.text }}
+            {% endif %}
+          <form method="post">
+          <input type="hidden" name="action" value="delete_task">
+          <input type="hidden" name="task_id" value="{{ task.id }}">
+          <button class="x_button" type="submit">X</button>
+          </form>
+          </summary>
+
+        <!-- SHOW SUBTASKS -->
+        {% for subtask in subtasks if subtask.task_id == task.id %}
+
+          <div class="text_subtasks_left">
+            {% if subtask.completed_status == 1 %}
+              <del>{{ loop.index }}. {{ subtask.text }}</del>
+            {% else %}
+              {{ loop.index }}. {{ subtask.text }}
+            {% endif %}
+
+            <form method="post">
+              <input type="hidden" name="action" value="delete_subtask">
+              <input type="hidden" name="subtask_id" value="{{ subtask.id }}">
+              <input type="hidden" name="task_id" value="{{subtask.task_id}}">
+              <button class="x_button" type="submit">X</button>
+            </form>
+          </div>
+        {% endfor %}
+
+        <!-- ADD SUBTASK -->
+        <div class="add_subtask">
+          <form method="post">
+            <input type="hidden" name="action" value="add_subtask">
+            <input type="hidden" name="task_id" value="{{ task.id }}">
+            <input autocomplete="off" name="subtask_text" placeholder="Add a subtask..." required>
+            <button class="+_button" type="submit">+</button>
+          </form>
+        </div>
+        
+      </details>
+      </div>
+    {% endfor %}
+
+        <!-- ADD TASK -->
+      <div class="add_task" >
+      <form method="post">
+        <input type="hidden" name="action" value="add_task">
+        <input type="hidden" name="sprint_id" value="{{ sprint.id }}">
+        <input autocomplete="off" name="task_text" placeholder="Add a task..." required>
+        <button class="+_button" type="submit"><b>+</b></button>
+      </form>
+      </div>
+  </div>
+  {% endfor %}
+  </div>
+
+  <!-- CENTER AREA - SPRINTS + TASKS BAR -->
+  <div class="center_area">
+      <!-- Sprint Bar -->
+      <h3>Status Bar</h3>
+      <br>
+      <div class="sprint_bar">
+      {% for sprint in sprints %}
+        <span>
+          Sprint {{ loop.index }}
+        </span>
+      {% endfor %}
+      </div>
+      <hr>
+    <!-- Tasks Bar -->
+     <div class="task_bar">
+        <form method="post">
+          <input type="hidden" name="action" value="select_sprint">
+
+          <select name="sprint_id" onchange="this.form.submit()">
+            <option value="">Select Sprint</option>
+            {% for sprint in sprints %}
+              <option value="{{ sprint.id }}"
+                {% if sprint.id == selected_sprint_id %}selected{% endif %}>
+                Sprint {{ loop.index }}{% if sprint.text %} ({{ sprint.text }}){% endif %}
+              </option>
+            {% endfor %}
+          </select>
+        </form>
+          {% for task in tasks %}
+          <div class="task_block">
+            {% if task.sprint_id == selected_sprint_id %}
+              {{ task.text }} 
+            {% endif %}
+          </div>
+          {% endfor %}
+     </div>
+     <hr>
+     <!-- Timer -->
+      <div class="timer" data-minutes="{{ break_time.assigned_time if break_time else 0 }}">
+        <h3>Timer</h3>
+          <form method="post" class="timer_buttons">
+            <input type="hidden" name="action" value="assign_time">
+            <input autocomplete="off" type="number" name="assigned_time" class="assigned_time" placeholder="Minutes" min="1" required>
+            <button type="submit" class="assign_time">Assign Time</button>
+          </form>
+          <div class="circle">
+            <div class="inner_circle">
+              <div class="countdown">
+                <h1></h1>
+              </div>
+            </div>
+          </div>
+          <script>
+            const timerElement = document.querySelector(".timer");
+            const display = document.querySelector(".countdown h1");
+
+            const minutes = Number(timerElement.dataset.minutes);
+            const totalSeconds = minutes * 60;
+
+            function updateDisplay(seconds) {
+              const mins = Math.floor(seconds / 60);
+              const secs = seconds % 60;
+              display.textContent =
+                String(mins).padStart(2, "0") + ":" +
+                String(secs).padStart(2, "0");
+            }
+
+            updateDisplay(totalSeconds);
+          </script>
+      </div>
+  </div>
+
+  <!-- RIGHT SIDE — NOTEPAD -->
+  <div class = "right_area">
+    <h3>Notepad</h3>
+    
+    <form method="post">
+      <input type="hidden" name="action" value="save_notes">
+      <textarea autocomplete="off" class="notepad" name="notes" rows="20" cols="40">
+  {% if notes %}{{ notes.text }}{% endif %}
+      </textarea>
+      <br>
+      <button class="save_button" type="submit">Save Notes</button>
+    </form>
+  </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,70 @@
+{% extends "layout.html"%}
+
+{% block title %}
+Dashboard
+{% endblock%}
+
+{% block main %}
+        {% if only_cash == "yes" %}
+        <div class="mb-3">
+            <h2 class='display-4'>Please purchase stocks to view portfolio</h2>
+
+                <h4>Total Shares Holdings: None</h4>
+            </table>
+        </div>
+        <div>
+            <h2>Cash Balance: {{cash_balance}}</h2>
+        </div>
+
+        {% else %}
+
+        <div class="mb-3">
+            <table class='table'>
+                <thead>
+                     <tr >
+                        <th colspan='4' class='table th' style='text-align-center'>
+                            <h4 class='h1'>Portfolio</h4>
+                        </th>
+                    </tr>
+                    <tr>
+                        <th>Name of the Stock</th>
+                        <th>Number of Shares</th>
+                        <th>Current Price of a Share</th>
+                        <th>Value of Holding</th>
+                    </tr>
+                </thead>
+                <tbody class='body'>
+                    {% for stock in all_stocks %}
+                    <tr>
+                        <td>{{stock['stock']}}({{stock['symbol']}})</td>
+                        <td>{{stock['shares']}}</td>
+                        <td>{{stock_price}}</td>
+                        <td>{{stock['shares'] * stock_price}}</td>
+                    </tr>
+                    {% endfor %}
+                    <tfoot>
+                        <tr>
+                            <td colspan='4'>
+                                <h4 class='h1'>Total Shares Holdings: {{stock_holding_value}}</h4>
+                                <h4 class='h1'>Cash Balance: {{cash_balance}}</h4>
+                                <h4 class='h1'>Total Valuation(Stocks+Cash): {{total_holding_value}}</h4>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </tbody>
+            </table>
+        </div>
+        <div>
+
+
+        </div>
+        {% endif %}
+
+
+    <!-- All Stocks Owned -->
+    <!-- Number of Shares of each stock -->
+    <!-- Current Price od Each Stock -->
+    <!-- Total Value of each holding -->
+    <!-- Current User Current Cash Balance -->
+    <!-- Total valuation of Cash + Stocks -->
+{% endblock %}

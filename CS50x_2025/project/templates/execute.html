@@ -1,0 +1,194 @@
+{% extends "layout.html" %}
+
+{% block title %}Execute{% endblock %}
+
+{% block main %}
+
+<!-- <h1  class ="webpage_title">Execute Mode</h1> -->
+
+<div class="page_container">
+{% if tasks|length == 0 or sprints|length == 0 %}
+  <p class="info_text">No active sprints or tasks. Go to Plan and add some!</p>
+
+{% else %}
+  <!-- Left Area -->
+  <div class="left_area">
+  <h3>Sprints</h3>
+  <br>
+  {% for sprint in sprints %}
+  <div class="sprint_box">
+
+    <b>Sprint {{ loop.index }}</b>
+
+    {% if sprint.text %}
+      <b>({{ sprint.text }})</b>
+    {% else %}
+      <b><br></b>
+    {% endif %}
+
+    <!-- SHOW TASKS -->
+    {% for task in tasks if task.sprint_id == sprint.id %}
+
+      <div class = "text_tasks_left">
+      <details open >
+          <summary>
+            {% if task.completed_status == 1 %}
+              <del>{{ loop.index }}. {{ task.text }}</del>
+              <form method="post">
+                <input type="hidden" name="action" value="undo_task">
+                <input type="hidden" name="task_id" value="{{ task.id }}">
+              <button class="undo_button" type="submit">Undo</button>
+            </form>
+            {% else %}  
+             {{ loop.index }}. {{ task.text }}
+            <form method="post">
+              <input type="hidden" name="action" value="done_task">
+              <input type="hidden" name="task_id" value="{{ task.id }}">
+              <button class="done_button" type="submit">Done</button>
+            </form>
+            {% endif %}
+          </summary>
+
+        <!-- SHOW SUBTASKS -->
+        {% for subtask in subtasks if subtask.task_id == task.id %}
+
+          <div class="text_subtasks_left">
+            {% if subtask.completed_status == 1 %}
+              <del> {{ loop.index }}. {{ subtask.text }}</del>
+              <form method="post">
+                <input type="hidden" name="action" value="undo_subtask">
+                <input type="hidden" name="subtask_id" value="{{ subtask.id }}">
+                <input type="hidden" name="task_id" value="{{subtask.task_id}}">
+              <button class="undo_button" type="submit">Undo</button>
+            </form>
+            {% else %}
+              {{ loop.index }}. {{ subtask.text }}
+            <form method="post">
+              <input type="hidden" name="action" value="done_subtask">
+              <input type="hidden" name="subtask_id" value="{{ subtask.id }}">
+              <input type="hidden" name="task_id" value="{{subtask.task_id}}">
+              <button class="done_button" type="submit">Done</button>
+            </form>
+            {% endif %}
+          </div>
+        {% endfor %}       
+      </details>
+      </div>
+    {% endfor %}
+  </div>
+  {% endfor %}
+  </div>
+
+  <!-- CENTER AREA - SPRINTS + TASKS BAR -->
+  <div class="center_area">
+    <h3>Status Bar</h3>
+    <br>
+      <!-- Sprint Bar -->
+      <div class="sprint_bar">
+      {% for sprint in sprints %}
+        <span>
+          Sprint {{ loop.index }}
+        </span>
+      {% endfor %}
+      </div>
+      <hr>
+<!-- Tasks Bar -->
+     <div class="task_bar">
+        <form method="post">
+          <input type="hidden" name="action" value="select_sprint">
+
+          <select name="sprint_id" onchange="this.form.submit()">
+            <option value="">Select Sprint</option>
+            {% for sprint in sprints %}
+              <option value="{{ sprint.id }}"
+                {% if sprint.id == selected_sprint_id %}selected{% endif %}>
+                Sprint {{ loop.index }}{% if sprint.text %} ({{ sprint.text }}){% endif %}
+              </option>
+            {% endfor %}
+          </select>
+        </form>
+          {% for task in tasks %}
+          <div class="task_block">
+            {% if task.sprint_id == selected_sprint_id %}
+              {{ task.text }} 
+            {% endif %}
+          </div>
+          {% endfor %}
+     </div>
+     <hr>
+     <!-- Timer -->
+      <div class="timer" data-minutes="{{ break_time.assigned_time if break_time else 0 }}">
+        <h3>Timer</h3>
+          <div class="timer_buttons">
+            <button class="start_button" onclick="startTimer()">Start</button>
+            <button class="pause_button" onclick="pauseTimer()">Pause</button>
+            <button class="reset_button" onclick="resetTimer()">Reset</button>
+          </div>
+          <div class="circle">
+            <div class="inner_circle">
+              <div class="countdown">
+                <h1>00:00</h1>
+              </div>
+            </div>
+          </div>
+          <script>
+            const timerElement = document.querySelector(".timer");
+            const display = document.querySelector(".countdown h1");
+
+            const minutes = Number(timerElement.dataset.minutes);
+            let totalSeconds = minutes * 60;
+            let remainingSeconds = totalSeconds;
+
+            let timerInterval = null;
+            let isRunning = false;
+
+            function updateDisplay() {
+              const mins = Math.floor(remainingSeconds / 60);
+              const secs = remainingSeconds % 60;
+              display.textContent =
+                String(mins).padStart(2, "0") + ":" +
+                String(secs).padStart(2, "0");
+            }
+
+            function startTimer() {
+              if (isRunning || remainingSeconds <= 0) return;
+
+              isRunning = true;
+              timerInterval = setInterval(() => {
+                remainingSeconds--;
+                updateDisplay();
+
+                if (remainingSeconds <= 0) {
+                  clearInterval(timerInterval);
+                  isRunning = false;
+                  alert("Time's up!");
+                }
+              }, 1000);
+            }
+
+            function pauseTimer() {
+              if (!isRunning) return;
+              clearInterval(timerInterval);
+              isRunning = false;
+            }
+
+            function resetTimer() {
+              clearInterval(timerInterval);
+              remainingSeconds = totalSeconds;
+              isRunning = false;
+              updateDisplay();
+            }
+
+            updateDisplay();
+          </script>
+      </div>
+  </div>
+
+  <!-- RIGHT SIDE — Random Art -->
+  <div class="right_area">
+    <img class="random_art" src="/static/ComputerAesthetic.gif" alt="random art placeholder">
+  </div>
+
+</div>
+{% endif %}
+{% endblock %}

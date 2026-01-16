@@ -1,92 +1,77 @@
-#include <stdio.h>
-#include <cs50.h>
-#include <ctype.h>
-
-string User_Input();
-int NumberOfWords(string text_input);
-int NumberOfLetters(string text_input);
-int NumberOfSentences(string text_input);
-
-int n = 0;
+#include <stdio.h> //Standard Library included
+#include <cs50.h> //CS50 Library included
+#include <ctype.h> //ctype Library included
+#include <math.h>
 
 int main (void)
 {
-    string text;
-    text = User_Input();
-
-    while (text[n] != '\0')
-    {
-    NumberOfWords(text);
-    NumberOfLetters(text);
-    NumberOfSentences(text);
-    n++;
-    }
-
-    //Check how many word and letter
-
-        //Check how many Letters are present in the first 100 words
-        //Count words until 100 words
-        //if(word_count = 100)
-        //{
-
-        //}
-        //else
-        //{
-        //    break;
-        //}
-        //Check How many Sentences are present in the first 100 words
-
-    //Calculate via the Coleman-Liau index
-
-    //Print the answer
-
-}
-
-//Get Text prompt from the User
-string User_Input()
-{
+    //GET USER INPUT
+    string input_text; //declaration of string input_text outside the loop to let it be called out by other functions/loops
     do
     {
-        string text = get_string("Text: ");     //get prompt from the User
-        n++;
+    input_text = get_string("Text: "); //Get the input using the CS50 get_string
     }
-    while (isblank(text_input[n]) || isdigit(text_input[n]) || isspace(text_input[n]));
-    return text;
-}
+    while (input_text[0] == '\0' || isspace(input_text[0])); //Keep asking for the input_text until the first alpahbet is a null (\0) or a space
 
-
-//Check how many word
-int NumberOfWords(string text)
-{
-    int word_count = 0;
-    while(isspace(text[n]))
+    //COUNT THE NUMBER OF WORDS, LETTER AND SENTENCES
+    int n = 0;
+    float word = 1; //Since we are checking spaces between words, there is always going to be one space missing before the first word, We count that soace as one word
+    float sentence = 0;
+    float letter = 0;
+    while (input_text[n] != '\0' ) //While n is the nth element of array we are checking of the string, starting from 0
     {
-        word_count++;
+        if (isspace(input_text[n])) //Check if there is a space
+        {
+        word++; //If there a space, +1 word count
+        }
+        else if (input_text[n] == '.' || input_text[n] == '!' || input_text[n] == '?') //Check if there is a punctuation
+        {
+        sentence++; //If there a puntuation, +1 sentence count
+        }
+        else if (isalnum(input_text[n])) //Check if there is a alphabet or number
+        {
+        letter++; //If there a alphabet or number, +1 letter count
+        }
+    n++; //Increase the nth value by +1
     }
-    printf("%i",word_count);
-    return word_count;
+    // printf ("Words: %i \n", word);
+    // printf ("Sentences: %i \n", sentence);
+    // printf ("Letters: %i \n", letter);
+
+    //CALCULATE THE COLEMAN-LIAU INDEX
+    float L = (letter/word) * 100;
+    float S = (sentence/word) * 100;
+    float index = 0.0588 * L - 0.296 * S - 15.8;
+
+    //PRINT THE GRADE
+    if (index >= 16)
+    {
+        printf("Grade 16+\n");
+    }
+    else if (index < 1)
+    {
+        printf("Before Grade 1\n");
+    }
+    else
+    {
+    printf("Grade %i\n",(int) round(index));
+    //where L is the average number of letters per 100 words in the text, and S is the average number of sentences per 100 words in the text.
+    }
 }
 
-//Check how many letters
-int NumberOfLetters(string text)
-{
-    int letter_count = 0;
-    while(isalnum(text[n]))
-    {
-        letter_count++;
-    }
-    printf("%i",letter_count);
-    return letter_count;
-}
 
-//Check how many sentences
-int NumberOfSentences(string text)
-{
-    int sentence_count = 0;
-    while(ispunct(text[n]))
-    {
-        sentence_count++;
-    }
-    printf("%i",sentence_count);
-    return sentence_count;
-}
+// //Get Text prompt from the User
+// string User_Input()
+// {
+//     do
+//     {
+//         string text = get_string("Text: ");     //get prompt from the User
+//         //n++;
+//     }
+//     while (isblank(text[n]) || isdigit(text[n]) || isspace(text[n]));
+//     return text;
+// }
+
+
+
+
